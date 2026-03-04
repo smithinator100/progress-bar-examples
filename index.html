@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="tab-bar">
+    <button type="button" class="tab-btn active" data-tab="gallery">Gallery</button>
+    <button type="button" class="tab-btn" data-tab="create">Create</button>
+  </nav>
+  <div class="tab-panel active" id="panel-gallery">
+    <div class="gallery-section theme-light">
+      <div class="gallery-grid" id="gallery-grid-light"></div>
+    </div>
+    <div class="gallery-section theme-dark">
+      <div class="gallery-grid" id="gallery-grid-dark"></div>
+    </div>
+    <div class="gallery-empty" id="gallery-empty">
+      <p>No presets saved yet.</p>
+      <p>Switch to <strong>Create</strong> to build your first banding preset.</p>
+    </div>
+  </div>
+  <div class="tab-panel" id="panel-create" hidden>
+    <main class="main-content">
+      <div class="progress-bar">
+        <button type="button" class="icon-btn" aria-label="Search">
+          <img src="icons/search.svg" alt="" width="24" height="24">
+        </button>
+        <div class="text-frame">
+          <span class="placeholder">Search</span>
+        </div>
+        <button type="button" class="icon-btn" aria-label="Microphone">
+          <img src="icons/mic.svg" alt="" width="24" height="24">
+        </button>
+        <div class="divider">
+          <img src="icons/cursor.svg" alt="" width="1" height="20">
+        </div>
+        <button type="button" class="icon-btn" aria-label="AI Chat">
+          <img src="icons/ai.svg" alt="" width="24" height="24">
+        </button>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill">
+            <div class="band"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <aside class="sidebar">
+    <h2 class="sidebar-title">Parameters</h2>
+    <label class="param-row">
+      <span class="param-label">Dark mode</span>
+      <button type="button" class="toggle" id="dark-mode-toggle" aria-pressed="false" aria-label="Toggle dark mode">
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+      </button>
+    </label>
+    <h3 class="sidebar-section-title">Banding</h3>
+    <div class="preset-row">
+      <select id="preset-select" class="curve-select" aria-label="Preset">
+        <option value="" selected>Custom</option>
+      </select>
+      <button type="button" class="preset-btn" id="preset-save" aria-label="Save preset">Save</button>
+      <button type="button" class="preset-btn" id="preset-rename" aria-label="Rename preset" disabled>Rename</button>
+      <button type="button" class="preset-btn" id="preset-update" aria-label="Update preset" disabled>Update</button>
+      <button type="button" class="preset-btn preset-btn-danger" id="preset-delete" aria-label="Delete preset" disabled>Delete</button>
+    </div>
+    <div class="preset-name-modal" id="preset-name-modal">
+      <input type="text" id="preset-name-input" class="preset-name-input" placeholder="Preset name" aria-label="Preset name" autocomplete="off">
+      <button type="button" class="preset-btn" id="preset-name-confirm">Save</button>
+      <button type="button" class="preset-btn preset-btn-danger" id="preset-name-cancel">Cancel</button>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Band shape</span>
+      <select id="band-shape" class="curve-select" aria-label="Band shape">
+        <option value="slanted" selected>Slanted</option>
+        <option value="rectangle">Rectangle</option>
+        <option value="rounded">Rounded</option>
+      </select>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Color</span>
+      <select id="color-mode" class="curve-select" aria-label="Color mode">
+        <option value="solid" selected>Solid</option>
+        <option value="gradient">Gradient</option>
+      </select>
+    </div>
+    <div class="param-row band-color-row" id="band-color-row">
+      <span class="param-label">Band color</span>
+      <input type="color" id="band-color" class="color-input" value="#ffffff" aria-label="Band color">
+    </div>
+    <div class="gradient-stops-container" id="gradient-stops-container">
+      <div class="stops-header">
+        <span class="stops-col-label">Color</span>
+        <span class="stops-col-label">Opacity</span>
+        <span class="stops-col-label">Position</span>
+        <span class="stops-col-spacer"></span>
+      </div>
+      <div id="stops-list"></div>
+      <button type="button" class="add-stop-btn" id="add-stop-btn">+ Add stop</button>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Band start opacity</span>
+      <input type="range" id="band-start-opacity" class="speed-slider" min="0" max="1" step="0.05" value="0.6">
+      <span class="param-value" id="band-start-opacity-value">60%</span>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Band end opacity</span>
+      <input type="range" id="band-end-opacity" class="speed-slider" min="0" max="1" step="0.05" value="0.6">
+      <span class="param-value" id="band-end-opacity-value">60%</span>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Band start width</span>
+      <input type="number" id="band-start-width" class="band-width-input" min="1" max="100" step="0.5" value="14" aria-label="Band start width">
+      <span class="param-unit">px</span>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Band end width</span>
+      <input type="number" id="band-end-width" class="band-width-input" min="1" max="100" step="0.5" value="14" aria-label="Band end width">
+      <span class="param-unit">px</span>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Speed</span>
+      <input type="range" id="animation-speed" class="speed-slider" min="0.5" max="5" step="0.1" value="2">
+      <span class="param-value" id="speed-value">2s</span>
+    </div>
+    <div class="param-row">
+      <span class="param-label">Curve</span>
+      <select id="animation-curve" class="curve-select" aria-label="Animation curve">
+        <optgroup label="Linear">
+          <option value="linear">linear</option>
+        </optgroup>
+        <optgroup label="Quad">
+          <option value="easeInQuad">easeInQuad</option>
+          <option value="easeOutQuad">easeOutQuad</option>
+          <option value="easeInOutQuad">easeInOutQuad</option>
+        </optgroup>
+        <optgroup label="Cubic">
+          <option value="easeInCubic">easeInCubic</option>
+          <option value="easeOutCubic">easeOutCubic</option>
+          <option value="easeInOutCubic" selected>easeInOutCubic</option>
+        </optgroup>
+        <optgroup label="Quint">
+          <option value="easeInQuint">easeInQuint</option>
+          <option value="easeOutQuint">easeOutQuint</option>
+          <option value="easeInOutQuint">easeInOutQuint</option>
+        </optgroup>
+        <optgroup label="Expo">
+          <option value="easeInExpo">easeInExpo</option>
+          <option value="easeOutExpo">easeOutExpo</option>
+          <option value="easeInOutExpo">easeInOutExpo</option>
+        </optgroup>
+      </select>
+    </div>
+    <label class="param-row">
+      <span class="param-label">Looped</span>
+      <button type="button" class="toggle" id="looped-toggle" aria-pressed="false" aria-label="Toggle looped bands">
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+      </button>
+    </label>
+    <div class="param-row looped-delay-row" id="looped-delay-row">
+      <span class="param-label">Delay between bands</span>
+      <input type="range" id="band-delay" class="speed-slider" min="0.1" max="2" step="0.1" value="0.5">
+      <span class="param-value" id="delay-value">0.5s</span>
+    </div>
+    </aside>
+    <div class="zoom-control" aria-label="Progress bar zoom">
+      <span class="zoom-label">Zoom</span>
+      <input type="range" id="zoom-slider" class="zoom-slider" min="0.5" max="3" step="0.1" value="1" aria-label="Zoom level">
+      <span class="zoom-value" id="zoom-value">1×</span>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
