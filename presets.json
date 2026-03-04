@@ -1,1 +1,266 @@
-[]
+[
+  {
+    "name": "Slow Pulse",
+    "settings": {
+      "bandShape": "slanted",
+      "colorMode": "solid",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 0.2,
+      "bandEndOpacity": 0.8,
+      "bandStartWidth": 64,
+      "bandEndWidth": 24,
+      "animationSpeed": 3,
+      "animationCurve": "easeInOutCubic",
+      "looped": false,
+      "bandDelay": 1.6
+    }
+  },
+  {
+    "name": "Dots EaseIn",
+    "settings": {
+      "bandShape": "rounded",
+      "colorMode": "solid",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 0,
+      "bandEndOpacity": 0.8,
+      "bandStartWidth": 2.5,
+      "bandEndWidth": 2.5,
+      "animationSpeed": 5,
+      "animationCurve": "easeInCubic",
+      "looped": true,
+      "bandDelay": 0.6
+    }
+  },
+  {
+    "name": "Dots EaseOut",
+    "settings": {
+      "bandShape": "rounded",
+      "colorMode": "solid",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 0,
+      "bandEndOpacity": 0.8,
+      "bandStartWidth": 2.5,
+      "bandEndWidth": 2.5,
+      "animationSpeed": 4,
+      "animationCurve": "easeOutCubic",
+      "looped": true,
+      "bandDelay": 0.6
+    }
+  },
+  {
+    "name": "Shine",
+    "settings": {
+      "bandShape": "rectangle",
+      "colorMode": "gradient",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 0,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 80,
+          "position": 25
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 50
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 80,
+          "position": 75
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 0,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 0.8,
+      "bandEndOpacity": 0.8,
+      "bandStartWidth": 100,
+      "bandEndWidth": 100,
+      "animationSpeed": 4,
+      "animationCurve": "easeOutCubic",
+      "looped": false,
+      "bandDelay": 0.5
+    }
+  },
+  {
+    "name": "Shimmer",
+    "settings": {
+      "bandShape": "rectangle",
+      "colorMode": "gradient",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 0,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 80,
+          "position": 25
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 50
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 80,
+          "position": 75
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 0,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 0.6,
+      "bandEndOpacity": 0.8,
+      "bandStartWidth": 100,
+      "bandEndWidth": 20,
+      "animationSpeed": 4,
+      "animationCurve": "easeOutQuint",
+      "looped": true,
+      "bandDelay": 1.5
+    }
+  },
+  {
+    "name": "Spark",
+    "settings": {
+      "bandShape": "rounded",
+      "colorMode": "gradient",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 0,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 1,
+      "bandEndOpacity": 0,
+      "bandStartWidth": 40,
+      "bandEndWidth": 40,
+      "animationSpeed": 3,
+      "animationCurve": "easeOutQuint",
+      "looped": false,
+      "bandDelay": 2
+    }
+  },
+  {
+    "name": "Herringbone",
+    "settings": {
+      "bandShape": "slanted",
+      "colorMode": "solid",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 0.2,
+      "bandEndOpacity": 0.7,
+      "bandStartWidth": 14,
+      "bandEndWidth": 14,
+      "animationSpeed": 5,
+      "animationCurve": "linear",
+      "looped": true,
+      "bandDelay": 0.9
+    }
+  },
+  {
+    "name": "Multicolored",
+    "settings": {
+      "bandShape": "rounded",
+      "colorMode": "gradient",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#f05f2b",
+          "opacity": 0,
+          "position": 0
+        },
+        {
+          "color": "#f05f2b",
+          "opacity": 100,
+          "position": 50
+        },
+        {
+          "color": "#9f6eb8",
+          "opacity": 100,
+          "position": 75
+        },
+        {
+          "color": "#4397e0",
+          "opacity": 0,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 1,
+      "bandEndOpacity": 1,
+      "bandStartWidth": 100,
+      "bandEndWidth": 80,
+      "animationSpeed": 4,
+      "animationCurve": "easeOutQuint",
+      "looped": false,
+      "bandDelay": 0.3
+    }
+  }
+]
