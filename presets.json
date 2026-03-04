@@ -213,6 +213,49 @@
     }
   },
   {
+    "name": "Shimmer v3",
+    "settings": {
+      "bandShape": "rectangle",
+      "colorMode": "gradient",
+      "bandColor": "#ffffff",
+      "gradientStops": [
+        {
+          "color": "#ffffff",
+          "opacity": 0,
+          "position": 0
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 80,
+          "position": 25
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 100,
+          "position": 50
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 80,
+          "position": 75
+        },
+        {
+          "color": "#ffffff",
+          "opacity": 0,
+          "position": 100
+        }
+      ],
+      "bandStartOpacity": 0.6,
+      "bandEndOpacity": 0.8,
+      "bandStartWidth": 100,
+      "bandEndWidth": 20,
+      "animationSpeed": 4,
+      "animationCurve": "easeOutQuint",
+      "looped": true,
+      "bandDelay": 1.6
+    }
+  },
+  {
     "name": "Spark",
     "settings": {
       "bandShape": "rounded",
