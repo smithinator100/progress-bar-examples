@@ -5,15 +5,25 @@ const PRESETS_JSON_PATH = 'presets.json';
 let _presets = [];
 let _presetsReady = null;
 
+function loadLocalPresets() {
+  try { return JSON.parse(localStorage.getItem(PRESETS_STORAGE_KEY)) || []; } catch { return []; }
+}
+
 function initPresetsStore() {
   _presetsReady = fetch(PRESETS_JSON_PATH)
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(data => {
-      _presets = Array.isArray(data) ? data : [];
-      localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(_presets));
+      const filePresets = Array.isArray(data) ? data : [];
+      const localPresets = loadLocalPresets();
+      if (filePresets.length > 0) {
+        _presets = filePresets;
+        localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(_presets));
+      } else {
+        _presets = localPresets;
+      }
     })
     .catch(() => {
-      try { _presets = JSON.parse(localStorage.getItem(PRESETS_STORAGE_KEY)) || []; } catch { _presets = []; }
+      _presets = loadLocalPresets();
     });
   return _presetsReady;
 }
