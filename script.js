@@ -1,5 +1,32 @@
 const STORAGE_KEY = 'dark-mode';
 const PRESETS_STORAGE_KEY = 'banding-presets';
+const PRESETS_JSON_PATH = 'presets.json';
+
+let _presets = [];
+let _presetsReady = null;
+
+function initPresetsStore() {
+  _presetsReady = fetch(PRESETS_JSON_PATH)
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      _presets = Array.isArray(data) ? data : [];
+      localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(_presets));
+    })
+    .catch(() => {
+      try { _presets = JSON.parse(localStorage.getItem(PRESETS_STORAGE_KEY)) || []; } catch { _presets = []; }
+    });
+  return _presetsReady;
+}
+
+function exportPresetsJSON() {
+  const json = JSON.stringify(_presets, null, 2) + '\n';
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'presets.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 
 const EASING_FUNCTIONS = {
   linear: t => t,
@@ -502,12 +529,11 @@ function initBanding() {
   }
 
   function loadPresets() {
-    try {
-      return JSON.parse(localStorage.getItem(PRESETS_STORAGE_KEY)) || [];
-    } catch { return []; }
+    return _presets;
   }
 
   function persistPresets(presets) {
+    _presets = presets;
     localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(presets));
   }
 
@@ -822,8 +848,7 @@ function renderGallery() {
   const gridDark = document.getElementById('gallery-grid-dark');
   const emptyState = document.getElementById('gallery-empty');
   const sections = document.querySelectorAll('#panel-gallery .gallery-section');
-  let presets;
-  try { presets = JSON.parse(localStorage.getItem(PRESETS_STORAGE_KEY)) || []; } catch { presets = []; }
+  const presets = _presets;
 
   galleryAnimation.stop();
   gridLight.innerHTML = '';
@@ -865,8 +890,13 @@ function getBandClipPath(shape) {
   return 'none';
 }
 
-initTabs();
-initDarkMode();
-initBanding();
-initLooped();
-initZoom();
+initPresetsStore().then(() => {
+  initTabs();
+  initDarkMode();
+  initBanding();
+  initLooped();
+  initZoom();
+
+  const exportBtn = document.getElementById('preset-export');
+  if (exportBtn) exportBtn.addEventListener('click', exportPresetsJSON);
+});
