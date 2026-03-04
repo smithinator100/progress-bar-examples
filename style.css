@@ -688,14 +688,6 @@ body.looped-enabled .param-row.looped-delay-row {
   background-color: rgba(229, 57, 53, 0.06);
 }
 
-.preset-btn-export {
-  color: #2e7d32;
-  border-color: rgba(46, 125, 50, 0.4);
-  margin-left: auto;
-}
-.preset-btn-export:hover {
-  background-color: rgba(46, 125, 50, 0.06);
-}
 
 .preset-name-modal {
   display: none;

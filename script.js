@@ -15,12 +15,10 @@ function initPresetsStore() {
     .then(data => {
       const filePresets = Array.isArray(data) ? data : [];
       const localPresets = loadLocalPresets();
-      if (filePresets.length > 0) {
-        _presets = filePresets;
-        localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(_presets));
-      } else {
-        _presets = localPresets;
-      }
+      const fileNames = new Set(filePresets.map(p => p.name));
+      const userPresets = localPresets.filter(p => !fileNames.has(p.name));
+      _presets = [...filePresets, ...userPresets];
+      localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(_presets));
     })
     .catch(() => {
       _presets = loadLocalPresets();
@@ -28,14 +26,66 @@ function initPresetsStore() {
   return _presetsReady;
 }
 
-function exportPresetsJSON() {
-  const json = JSON.stringify(_presets, null, 2) + '\n';
-  const blob = new Blob([json], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'presets.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
+let _fileHandle = null;
+
+function openPresetsDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('presets-db', 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('handles');
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function storeFileHandle(handle) {
+  const db = await openPresetsDB();
+  const tx = db.transaction('handles', 'readwrite');
+  tx.objectStore('handles').put(handle, 'presets');
+  return new Promise((resolve, reject) => {
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function loadFileHandle() {
+  const db = await openPresetsDB();
+  const tx = db.transaction('handles', 'readonly');
+  const req = tx.objectStore('handles').get('presets');
+  return new Promise((resolve, reject) => {
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function restoreFileHandle() {
+  try {
+    const handle = await loadFileHandle();
+    if (!handle) return;
+    const perm = await handle.queryPermission({ mode: 'readwrite' });
+    if (perm === 'granted') _fileHandle = handle;
+  } catch { /* no stored handle or permission revoked */ }
+}
+
+async function acquireFileHandle() {
+  if (_fileHandle) return _fileHandle;
+  try {
+    _fileHandle = await window.showSaveFilePicker({
+      suggestedName: 'presets.json',
+      types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+    });
+    await storeFileHandle(_fileHandle);
+    return _fileHandle;
+  } catch { return null; }
+}
+
+async function writePresetsToFile(presets) {
+  const handle = _fileHandle || await acquireFileHandle();
+  if (!handle) return;
+  try {
+    const writable = await handle.createWritable();
+    await writable.write(JSON.stringify(presets, null, 2) + '\n');
+    await writable.close();
+  } catch { /* write failed, localStorage still has data */ }
 }
 
 const EASING_FUNCTIONS = {
@@ -545,6 +595,7 @@ function initBanding() {
   function persistPresets(presets) {
     _presets = presets;
     localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(presets));
+    writePresetsToFile(presets);
   }
 
   function updatePresetButtons() {
@@ -901,12 +952,10 @@ function getBandClipPath(shape) {
 }
 
 initPresetsStore().then(() => {
+  restoreFileHandle();
   initTabs();
   initDarkMode();
   initBanding();
   initLooped();
   initZoom();
-
-  const exportBtn = document.getElementById('preset-export');
-  if (exportBtn) exportBtn.addEventListener('click', exportPresetsJSON);
 });
